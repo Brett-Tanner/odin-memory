@@ -3,16 +3,13 @@ import { cachedPokemon, listResponse, pokemonResponse } from "./pokemon";
 import { PokemonCard } from "./components/PokemonCard";
 
 function App() {
-  const [pokemonUrls, setPokemonUrls] = useState<string[]>([]);
-  const [activePokemon, setActivePokemon] = useState<cachedPokemon[]>(
-    new Array(20)
-  );
+  const [activePokemon, setActivePokemon] = useState<cachedPokemon[]>([]);
 
   // Get the initial list of urls for all pokemon
   useEffect(() => {
     async function getPokemon() {
       const listResponse = await fetch(
-        "https://pokeapi.co/api/v2/pokemon/?limit=2000"
+        "https://pokeapi.co/api/v2/pokemon/?limit=20000"
       );
       const listData: listResponse = await listResponse.json();
       // Get list of urls for each available pokemon
@@ -26,8 +23,6 @@ function App() {
         await getRandomPokemon(urls, randomPokemon);
       }
 
-      console.log(randomPokemon);
-      setPokemonUrls(urls);
       setActivePokemon(randomPokemon);
     }
 
@@ -59,9 +54,11 @@ function App() {
 
   return (
     <>
-      {activePokemon.map((pokemon) => {
-        return <PokemonCard {...pokemon} key={pokemon.id} />;
-      })}
+      <main className="grid grid-cols-5 gap-3 p-3">
+        {activePokemon.map((pokemon) => {
+          return <PokemonCard {...pokemon} key={pokemon.id} />;
+        })}
+      </main>
     </>
   );
 }
