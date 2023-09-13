@@ -20,7 +20,8 @@ export function PokemonCard({
         return p;
       }
     });
-    setActivePokemon(newPokemon);
+    const shuffledPokemon = shuffle(newPokemon);
+    setActivePokemon(shuffledPokemon);
   };
 
   return (
@@ -42,4 +43,24 @@ function nameCase(string: string) {
     return `${word[0].toUpperCase()}${word.slice(1)}`;
   });
   return upperArray.join(" ");
+}
+
+function shuffle(array: cachedPokemon[]) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex > 0) {
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
 }
