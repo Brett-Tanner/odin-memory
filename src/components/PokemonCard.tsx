@@ -1,14 +1,37 @@
+import { SetStateAction } from "react";
 import { cachedPokemon } from "../pokemon";
 
-export function PokemonCard({ src, name, clicked }: cachedPokemon) {
+interface props {
+  pokemon: cachedPokemon;
+  activePokemon: cachedPokemon[];
+  setActivePokemon: SetStateAction;
+}
+
+export function PokemonCard({
+  pokemon,
+  activePokemon,
+  setActivePokemon,
+}: props) {
+  const handleClick = () => {
+    const newPokemon = activePokemon.map((p) => {
+      if (p.id === pokemon.id) {
+        return { ...p, clicked: p.clicked + 1 };
+      } else {
+        return p;
+      }
+    });
+    setActivePokemon(newPokemon);
+  };
+
   return (
     <button
       className="flex flex-col gap-3 p-3 justify-center items-center border-4 border-neutral-100 rounded-xl bg-blue-500"
       type="button"
+      onClick={handleClick}
     >
-      <img src={src ? src : ""} alt={nameCase(name)} />
-      <p>{nameCase(name)}</p>
-      <p>{clicked ? "clicked" : "not clicked"}</p>
+      <img src={pokemon.src ? pokemon.src : ""} alt={nameCase(pokemon.name)} />
+      <p className="font-bold text-xl">{nameCase(pokemon.name)}</p>
+      <p>{pokemon.clicked}</p>
     </button>
   );
 }

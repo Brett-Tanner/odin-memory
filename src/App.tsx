@@ -4,6 +4,9 @@ import { PokemonCard } from "./components/PokemonCard";
 
 function App() {
   const [activePokemon, setActivePokemon] = useState<cachedPokemon[]>([]);
+  const gameOver = activePokemon.some((pokemon) => {
+    return pokemon.clicked > 1;
+  });
 
   // Get the initial list of urls for all pokemon
   useEffect(() => {
@@ -37,7 +40,7 @@ function App() {
         id: pokemonData.id,
         name: pokemonData.name,
         src: pokemonData.sprites.front_default,
-        clicked: false,
+        clicked: 0,
       };
       if (
         pokemonData.sprites.front_default &&
@@ -52,15 +55,26 @@ function App() {
     getPokemon();
   }, []);
 
-  return (
-    <>
-      <main className="grid grid-cols-5 gap-3 p-3">
-        {activePokemon.map((pokemon) => {
-          return <PokemonCard {...pokemon} key={pokemon.id} />;
-        })}
-      </main>
-    </>
-  );
+  if (gameOver) {
+    return <h1>That's all folks!</h1>;
+  } else {
+    return (
+      <>
+        <main className="grid grid-cols-5 gap-3 p-3">
+          {activePokemon.map((pokemon) => {
+            return (
+              <PokemonCard
+                pokemon={pokemon}
+                activePokemon={activePokemon}
+                setActivePokemon={setActivePokemon}
+                key={pokemon.id}
+              />
+            );
+          })}
+        </main>
+      </>
+    );
+  }
 }
 
 export default App;

@@ -2,7 +2,7 @@ interface cachedPokemon {
   id: number;
   name: string;
   src: string | null;
-  clicked: boolean;
+  clicked: number;
 }
 
 interface listResponse {
