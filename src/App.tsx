@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { cachedPokemon, listResponse, pokemonResponse } from "./pokemon";
 import { PokemonCard } from "./components/PokemonCard";
+import { Score } from "./components/Score";
 
 function App() {
   const [activePokemon, setActivePokemon] = useState<cachedPokemon[]>([]);
-  const gameOver = activePokemon.some((pokemon) => {
+  const [score, setScore] = useState(0);
+  const [pB, setPB] = useState(0);
+  const problemChild = activePokemon.find((pokemon) => {
     return pokemon.clicked > 1;
   });
 
@@ -55,18 +58,40 @@ function App() {
     getPokemon();
   }, []);
 
-  if (gameOver) {
-    return <h1>That's all folks!</h1>;
+  if (problemChild) {
+    return (
+      <main className="h-full flex flex-col justify-center items-center gap-12 p-12">
+        <Score score={score} pB={pB} />
+        <h1 className="text-5xl font-bold text-blue-500 text-center col-span-5">
+          You clicked {nameCase(problemChild.name)} twice!
+        </h1>
+        <PokemonCard
+          pokemon={problemChild}
+          activePokemon={activePokemon}
+          setActivePokemon={setActivePokemon}
+          score={score}
+          setScore={setScore}
+          pB={pB}
+          setPB={setPB}
+          key={problemChild.id}
+        />
+      </main>
+    );
   } else {
     return (
       <>
         <main className="grid grid-cols-5 gap-3 p-3">
+          <Score score={score} pB={pB} />
           {activePokemon.map((pokemon) => {
             return (
               <PokemonCard
                 pokemon={pokemon}
                 activePokemon={activePokemon}
                 setActivePokemon={setActivePokemon}
+                score={score}
+                setScore={setScore}
+                pB={pB}
+                setPB={setPB}
                 key={pokemon.id}
               />
             );
@@ -75,6 +100,14 @@ function App() {
       </>
     );
   }
+}
+
+function nameCase(string: string) {
+  const wordArray = string.split("-");
+  const upperArray = wordArray.map((word) => {
+    return `${word[0].toUpperCase()}${word.slice(1)}`;
+  });
+  return upperArray.join(" ");
 }
 
 export default App;

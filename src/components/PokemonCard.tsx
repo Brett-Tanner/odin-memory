@@ -5,12 +5,20 @@ interface props {
   pokemon: cachedPokemon;
   activePokemon: cachedPokemon[];
   setActivePokemon: SetStateAction;
+  score: number;
+  setScore: SetStateAction;
+  pB: number;
+  setPB: SetStateAction;
 }
 
 export function PokemonCard({
   pokemon,
   activePokemon,
   setActivePokemon,
+  score,
+  setScore,
+  pB,
+  setPB,
 }: props) {
   const handleClick = () => {
     const newPokemon = activePokemon.map((p) => {
@@ -22,6 +30,10 @@ export function PokemonCard({
     });
     const shuffledPokemon = shuffle(newPokemon);
     setActivePokemon(shuffledPokemon);
+    if (pokemon.clicked < 1) {
+      setScore(score + 1);
+      if (score + 1 > pB) setPB(score + 1);
+    }
   };
 
   return (
@@ -32,7 +44,6 @@ export function PokemonCard({
     >
       <img src={pokemon.src ? pokemon.src : ""} alt={nameCase(pokemon.name)} />
       <p className="font-bold text-xl">{nameCase(pokemon.name)}</p>
-      <p>{pokemon.clicked}</p>
     </button>
   );
 }
