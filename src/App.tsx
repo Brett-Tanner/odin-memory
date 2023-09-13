@@ -94,27 +94,33 @@ function App() {
         </button>
       </main>
     );
+  } else if (activePokemon.length < 20) {
+    return (
+      <main className="grid grid-cols-5 gap-3 p-3">
+        <div className="col-span-5 flex justify-center items-center gap-5 p-2 bg-sky-600 border-4 rounded-lg border-neutral-200 text-2xl font-bold text-neutral-200 animate-pulse">
+          Loading Pokemon...
+        </div>
+      </main>
+    );
   } else {
     return (
-      <>
-        <main className="grid grid-cols-5 gap-3 p-3">
-          <Score score={score} pB={pB} />
-          {activePokemon.map((pokemon) => {
-            return (
-              <PokemonCard
-                pokemon={pokemon}
-                activePokemon={activePokemon}
-                setActivePokemon={setActivePokemon}
-                score={score}
-                setScore={setScore}
-                pB={pB}
-                setPB={setPB}
-                key={pokemon.id}
-              />
-            );
-          })}
-        </main>
-      </>
+      <main className="grid grid-cols-5 gap-3 p-3">
+        <Score score={score} pB={pB} />
+        {activePokemon.map((pokemon) => {
+          return (
+            <PokemonCard
+              pokemon={pokemon}
+              activePokemon={activePokemon}
+              setActivePokemon={setActivePokemon}
+              score={score}
+              setScore={setScore}
+              pB={pB}
+              setPB={setPB}
+              key={pokemon.id}
+            />
+          );
+        })}
+      </main>
     );
   }
 }
