@@ -4,11 +4,11 @@ import { cachedPokemon } from "../pokemon";
 interface props {
   pokemon: cachedPokemon;
   activePokemon: cachedPokemon[];
-  setActivePokemon: SetStateAction;
+  setActivePokemon: React.Dispatch<SetStateAction<cachedPokemon[]>>;
   score: number;
-  setScore: SetStateAction;
+  setScore: React.Dispatch<SetStateAction<number>>;
   pB: number;
-  setPB: SetStateAction;
+  setPB: React.Dispatch<SetStateAction<number>>;
 }
 
 export function PokemonCard({

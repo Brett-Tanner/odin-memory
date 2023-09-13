@@ -14,6 +14,7 @@ function App() {
 
   // Get the initial list of urls for all pokemon
   useEffect(() => {
+    let ignore = false;
     async function getPokemon() {
       const listResponse = await fetch(
         "https://pokeapi.co/api/v2/pokemon/?limit=20000"
@@ -46,6 +47,7 @@ function App() {
         src: pokemonData.sprites.front_default,
         clicked: 0,
       };
+
       if (
         pokemonData.sprites.front_default &&
         randomPokemon.every((p) => p.id !== pokemon.id)
@@ -56,10 +58,13 @@ function App() {
       }
     }
 
-    if (newGame) {
+    if (newGame && !ignore) {
       getPokemon();
       setScore(0);
       setNewGame(false);
+      return () => {
+        ignore = true;
+      };
     }
   }, [newGame]);
 
