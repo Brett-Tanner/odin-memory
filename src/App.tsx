@@ -7,6 +7,7 @@ function App() {
   const [activePokemon, setActivePokemon] = useState<cachedPokemon[]>([]);
   const [score, setScore] = useState(0);
   const [pB, setPB] = useState(0);
+  const [newGame, setNewGame] = useState(true);
   const problemChild = activePokemon.find((pokemon) => {
     return pokemon.clicked > 1;
   });
@@ -55,8 +56,12 @@ function App() {
       }
     }
 
-    getPokemon();
-  }, []);
+    if (newGame) {
+      getPokemon();
+      setScore(0);
+      setNewGame(false);
+    }
+  }, [newGame]);
 
   if (problemChild) {
     return (
@@ -75,6 +80,13 @@ function App() {
           setPB={setPB}
           key={problemChild.id}
         />
+        <button
+          type="button"
+          onClick={() => setNewGame(true)}
+          className="text-3xl p-3 border-4 border-neutral-100 rounded-xl bg-blue-500"
+        >
+          New Game
+        </button>
       </main>
     );
   } else {
